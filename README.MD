@@ -7,8 +7,9 @@
 
 
 #### Recommendation for local development most comfortable usage:
+    make run   // run the application
+    make race // run the application with  race flag
     make local // run all containers
-    make run // run the application
 
 #### 🙌👨‍💻🚀 Docker-compose files:
     docker-compose.yml
@@ -17,8 +18,8 @@
     make docker
 
 ### Local development usage:
-    make local
     make run
+    make local
 
 Demo:
 
