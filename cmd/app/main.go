@@ -93,7 +93,8 @@ func run(sigChannel chan os.Signal) {
 
 	//create new http client
 	client := utils.NewFastClient(config.TimeOut)
-	//counter i
+
+	//create counter {is sync.Mao} but I customized it
 	counter := &domain.Counter{}
 
 	//create new repository
