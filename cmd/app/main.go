@@ -91,7 +91,7 @@ func run(sigChannel chan os.Signal) {
 	clr.Unset()
 	fmt.Printf(" %v Number of Concurrent connections!\n", NUM_PARALLEL)
 
-	//create new http client forom utils
+	//create new http client
 	client := utils.NewFastClient(config.TimeOut)
 	//counter i
 	counter := &domain.Counter{}
