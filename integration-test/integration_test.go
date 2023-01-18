@@ -63,7 +63,7 @@ func TestSuccessStatusRequest(t *testing.T) {
 	//counter i
 	counter := &domain.Counter{}
 
-	request := worker.NewRequestRepository(config, client, counter)
+	request := worker.NewWorker(config, client, counter)
 
 	app := application.New(request)
 
@@ -118,7 +118,7 @@ func TestZeroStatusReturn(t *testing.T) {
 	//counter i
 	counter := &domain.Counter{}
 
-	request := worker.NewRequestRepository(config, client, counter)
+	request := worker.NewWorker(config, client, counter)
 
 	app := application.New(request)
 

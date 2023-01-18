@@ -11,19 +11,20 @@ import (
 	"time"
 )
 
-type WorkerRepository struct {
+type Worker struct {
 	conf    *domain.APIConfig
 	client  *fasthttp.Client
 	counter *domain.Counter
 }
 
-func NewRequestRepository(conf *domain.APIConfig, client *fasthttp.Client, counter *domain.Counter) *WorkerRepository {
-	return &WorkerRepository{conf: conf, client: client, counter: counter}
+// New Worker
+func NewWorker(conf *domain.APIConfig, client *fasthttp.Client, counter *domain.Counter) *Worker {
+	return &Worker{conf: conf, client: client, counter: counter}
 }
 
-var _ ports.WorkerRepo = (*WorkerRepository)(nil)
+var _ ports.WorkerRepo = (*Worker)(nil)
 
-func (r WorkerRepository) AsyncHTTP() {
+func (r Worker) AsyncHTTP() {
 
 	//create api status
 	status := &domain.Status{
@@ -61,27 +62,41 @@ func (r WorkerRepository) AsyncHTTP() {
 }
 
 // Run sends an HTTP request and returns an HTTP response, following
-func (r WorkerRepository) Run(url string, method string) (requestDuration time.Duration, responseSize int) {
+func (r Worker) Run(url string, method string) (requestDuration time.Duration, responseSize int) {
 
+	// for calculate the request duration
 	requestDuration = -1
+
+	// caclcute the response size
 	responseSize = -1
+
+	//start for  calculate the time for each request
 	start := time.Now()
-	//resp, err := r.client.Do(req)
+
+	//create request and response for fasthttp client
 	req := fasthttp.AcquireRequest()
 	req.SetRequestURI(url)
 	req.Header.SetMethod(method)
 	resp := fasthttp.AcquireResponse()
+
+	// call the request
 	if err := r.client.Do(req, resp); err != nil {
 		r.counter.Add("-1xx", 1)
 		return
 	}
 
+	//get body after we
 	body := resp.Body()
 
 	// check request code in general
 	if resp.StatusCode() == http.StatusOK || resp.StatusCode() == http.StatusCreated {
+
+		//calculate the duration base on start and time since
 		requestDuration = time.Since(start)
+
+		//for calculate the size of  header
 		size := 0
+
 		//calculate the size of header
 		resp.Header.VisitAll(func(key, value []byte) {
 			size += len(key) + len(value) + 2 // 2 for the \r\n that separates the headers.
@@ -92,22 +107,28 @@ func (r WorkerRepository) Run(url string, method string) (requestDuration time.D
 		r.counter.Add("2xx", 1)
 	} else if resp.StatusCode() == http.StatusContinue || resp.StatusCode() == http.StatusSwitchingProtocols ||
 		resp.StatusCode() == http.StatusProcessing {
+		// all error from 1xx set to map
+		r.counter.Add("1xx", 1)
 	} else if resp.StatusCode() == http.StatusMultipleChoices || resp.StatusCode() == http.StatusMovedPermanently ||
 		resp.StatusCode() == http.StatusFound || resp.StatusCode() == http.StatusSeeOther ||
 		resp.StatusCode() == http.StatusNotModified {
+		// all error from 3xx set to map
 		r.counter.Add("3xx", 1)
 	} else if resp.StatusCode() == http.StatusBadRequest || resp.StatusCode() == http.StatusUnauthorized ||
 		resp.StatusCode() == http.StatusPaymentRequired || resp.StatusCode() == http.StatusForbidden ||
 		resp.StatusCode() == http.StatusNotFound || resp.StatusCode() == http.StatusMethodNotAllowed ||
 		resp.StatusCode() == http.StatusNotAcceptable || resp.StatusCode() == http.StatusProxyAuthRequired ||
 		resp.StatusCode() == http.StatusRequestTimeout || resp.StatusCode() == http.StatusContinue {
+		// all error from 4xx set to map
 		r.counter.Add("4xx", 1)
 	} else if resp.StatusCode() == http.StatusInternalServerError || resp.StatusCode() == http.StatusNotImplemented ||
 		resp.StatusCode() == http.StatusBadGateway || resp.StatusCode() == http.StatusServiceUnavailable ||
 		resp.StatusCode() == http.StatusGatewayTimeout || resp.StatusCode() == http.StatusHTTPVersionNotSupported {
+		// all error from 5xx set to map
 		r.counter.Add("5xx", 1)
-
 	} else {
+		// unknown Status code
+		//maybe we dont get response
 		r.counter.Add("0xx", 1)
 	}
 	return

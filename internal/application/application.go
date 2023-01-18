@@ -24,6 +24,7 @@ type (
 
 var _ App = (*Application)(nil)
 
+// creaet new Application
 func New(stores ports.WorkerRepo) *Application {
 	return &Application{
 		appCommands: appCommands{

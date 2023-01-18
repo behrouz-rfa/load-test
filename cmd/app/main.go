@@ -95,7 +95,7 @@ func run(sigChannel chan os.Signal) {
 	counter := &domain.Counter{}
 
 	//create new repository
-	request := worker.NewRequestRepository(config, client, counter)
+	request := worker.NewWorker(config, client, counter)
 
 	app := application.New(request)
 
