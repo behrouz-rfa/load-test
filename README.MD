@@ -22,10 +22,9 @@
 
 Demo:
 
-[//]: # (![]&#40;http://damien.pobel.fr/images/youtube-video-github.gif&#41;)
+[![Final video of fixing issues in your code in VS Code](https://i9.ytimg.com/vi_webp/6ewjpOUrGyU/mq2.webp?sqp=CPi_np4G-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGEEgUChlMA8=&rs=AOn4CLCYgNCMJ-aVRLP9f_bR4ti1vhPZAQ)](https://www.youtube.com/watch?v=6ewjpOUrGyU&list=PLc0PxFU2AtMRqWRMJUZChA8lqlR9UiE3h)
 
-[//]: # ()
-[//]: # (See also [Embed a Youtube video in Github markdown]&#40;http://damien.pobel.fr/post/youtube-video-github/&#41;)
+See also [The tutoiral on youtube](https://www.youtube.com/watch?v=6ewjpOUrGyU)
 
 ## Using 
 
