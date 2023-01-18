@@ -1,0 +1,21 @@
+version: '3'
+services:
+  load:
+    build: .
+    image: "load-test"
+    links:
+      - server
+
+  integration:
+    build:
+      context: .
+      dockerfile: integration-test/Dockerfile
+    container_name: integration
+    image: integration
+    depends_on:
+      - load
+
+  server:
+    image: "nginx"
+    expose:
+      - "80"
