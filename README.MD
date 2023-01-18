@@ -55,4 +55,9 @@ Below is A basic example which will use 10 workers and time out with 4000 millis
 $ go run ./cmd/app/main.go -to 4000 -d 5 -c 5 -u https://jsonplaceholder.typicode.com/todos/1
 ```
 
+## TODO
+- [x] Support GET request
+- [ ] Support POST request
+- [ ] Support UPDATE request
+- [ ] Support PATCH request
 
