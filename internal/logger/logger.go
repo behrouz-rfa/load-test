@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// ShowTimeProgress is going to show a countdown timer base on requests duration
 func ShowTimeProgress(requestDurationInSeconds int) {
 	// get an instance of writer
 	writer := goterminal.New(os.Stdout)

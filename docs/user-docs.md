@@ -26,6 +26,8 @@ PrintResult out the result into console
 func ShowTimeProgress(requestDurationInSeconds int)
 ```
 
+ShowTimeProgress is going to show a countdown timer base on requests duration
+
 # domain
 
 ```go
@@ -208,6 +210,8 @@ type Application struct {
 func New(stores ports.WorkerRepo) *Application
 ```
 
+creaet new Application
+
 ## type Commands
 
 ```go
@@ -224,36 +228,38 @@ import "load-test/internal/worker"
 
 ## Index
 
-- [type WorkerRepository](<#type-workerrepository>)
-  - [func NewRequestRepository(conf *domain.APIConfig, client *fasthttp.Client, counter *domain.Counter) *WorkerRepository](<#func-newrequestrepository>)
-  - [func (r WorkerRepository) AsyncHTTP()](<#func-workerrepository-asynchttp>)
-  - [func (r WorkerRepository) Run(url string, method string) (requestDuration time.Duration, responseSize int)](<#func-workerrepository-run>)
+- [type Worker](<#type-worker>)
+  - [func NewWorker(conf *domain.APIConfig, client *fasthttp.Client, counter *domain.Counter) *Worker](<#func-newworker>)
+  - [func (r Worker) AsyncHTTP()](<#func-worker-asynchttp>)
+  - [func (r Worker) Run(url string, method string) (requestDuration time.Duration, responseSize int)](<#func-worker-run>)
 
 
-## type WorkerRepository
+## type Worker
 
 ```go
-type WorkerRepository struct {
+type Worker struct {
     // contains filtered or unexported fields
 }
 ```
 
-### func NewRequestRepository
+### func NewWorker
 
 ```go
-func NewRequestRepository(conf *domain.APIConfig, client *fasthttp.Client, counter *domain.Counter) *WorkerRepository
+func NewWorker(conf *domain.APIConfig, client *fasthttp.Client, counter *domain.Counter) *Worker
 ```
 
-### func \(WorkerRepository\) AsyncHTTP
+New Worker
+
+### func \(Worker\) AsyncHTTP
 
 ```go
-func (r WorkerRepository) AsyncHTTP()
+func (r Worker) AsyncHTTP()
 ```
 
-### func \(WorkerRepository\) Run
+### func \(Worker\) Run
 
 ```go
-func (r WorkerRepository) Run(url string, method string) (requestDuration time.Duration, responseSize int)
+func (r Worker) Run(url string, method string) (requestDuration time.Duration, responseSize int)
 ```
 
 Run sends an HTTP request and returns an HTTP response, following
