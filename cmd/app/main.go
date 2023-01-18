@@ -41,12 +41,13 @@ func main() {
 	sigChannel := make(chan os.Signal, 1)
 	signal.Notify(sigChannel, syscall.SIGINT, syscall.SIGTERM)
 
-	//Pars all falg
+	//Pars all flags
 	flag.Parse()
 	if !flag.Parsed() {
 		log.Fatalln("[Info] Command line flags parsing failed, Please check the input")
 	}
-	//pring help if user wants to show the help
+
+	//print help if user wants to show the help
 	if help {
 		fmt.Println("Usage: command [<flags>] <url>")
 		flag.VisitAll(func(flag *flag.Flag) {
@@ -64,25 +65,26 @@ func main() {
 		return
 	}
 
+	//run the application
 	run(sigChannel)
 }
 
 // run the application
 func run(sigChannel chan os.Signal) {
 
-	//create header for the request
+	//create header for the worker
 	requestHeader := utils.RequestHeader(headerValues)
 
-	// create the request parameter
+	// create the worker parameter
 	requestParams := domain.CreateRequestParams(requestURL, requestMethod, requestHeader)
 
-	//create the chana for getting all status and details from the request
+	//create the chana for getting all status and details from the worker
 	statusChan := make(chan *domain.Status, NUM_PARALLEL)
 
 	//create config
 	config := domain.NewAPIConfig(NUM_PARALLEL, requestDurationInSeconds, requestTimeOut, statusChan, requestParams)
 
-	//print some information about the request and url
+	//print some information about the worker and url
 	fmt.Printf("Load Test running for %vs on this url: ", requestDurationInSeconds)
 	clr.Set(clr.FgGreen)
 	fmt.Printf(" %v \n", requestURL)
@@ -95,9 +97,10 @@ func run(sigChannel chan os.Signal) {
 	counter := &domain.Counter{}
 
 	//create new repository
-	request := worker.NewWorker(config, client, counter)
+	worker := worker.NewWorker(config, client, counter)
 
-	app := application.New(request)
+	//create new application
+	app := application.New(worker)
 
 	// progressbar configuration
 	logger.ShowTimeProgress(requestDurationInSeconds)
@@ -109,7 +112,7 @@ func run(sigChannel chan os.Signal) {
 		}()
 	}
 
-	//this part noting just for shoing the results from the request
+	//this part noting just for shoing the results from the worker
 	responseCounter := 0
 	status := domain.NewStatus()
 
@@ -131,9 +134,9 @@ func run(sigChannel chan os.Signal) {
 		}
 	}
 
-	// check how many request we send if ==  0 show the message
+	// check how many worker we send if ==  0 show the message
 	if status.RequestsCounter == 0 {
-		fmt.Println("[Info] No request found")
+		fmt.Println("[Info] No worker found")
 		return
 	}
 
