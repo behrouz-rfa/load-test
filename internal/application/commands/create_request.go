@@ -9,19 +9,19 @@ type (
 	}
 
 	CreateRequestHandler struct {
-		woereRepo ports.WorkerRepo
+		workerRepo ports.WorkerRepo
 	}
 )
 
 // create Workerepo
 func NewCreateStoreHandler(workeRepo ports.WorkerRepo) CreateRequestHandler {
 	return CreateRequestHandler{
-		woereRepo: workeRepo,
+		workerRepo: workeRepo,
 	}
 }
 
 // request to start load testing
 func (a CreateRequestHandler) CreateRequest() {
-	a.woereRepo.AsyncHTTP()
+	a.workerRepo.AsyncHTTP()
 
 }

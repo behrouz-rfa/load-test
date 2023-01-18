@@ -4,6 +4,9 @@
 run:
 	go run ./cmd/app/main.go -to 4000 -d 5 -c 5 -u https://jsonplaceholder.typicode.com/todos/1
 
+race:
+	go run -race ./cmd/app/main.go -to 4000 -d 5 -c 5 -u https://jsonplaceholder.typicode.com/todos/1
+
 build:
 	go build ./cmd/app/main.go
 

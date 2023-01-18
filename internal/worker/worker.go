@@ -48,9 +48,13 @@ func (r Worker) AsyncHTTP() {
 		val := r.conf.Params
 		reqDuration, respSize := r.Run(val.URL, val.Method)
 		if respSize > 0 {
+			//increment the success Request-counter
 			status.RequestsCounter++
+			// add response size
 			status.TotalResponseSize += int64(respSize)
+			// increment the request duration
 			status.TotalDuration += reqDuration
+			//calculate the min and max time
 			status.MaxTime = utils2.FindMaxRequestTime(reqDuration, status.MaxTime)
 			status.MinTime = utils2.FindMinRequestTime(reqDuration, status.MinTime)
 		} else {
@@ -58,6 +62,7 @@ func (r Worker) AsyncHTTP() {
 		}
 
 	}
+	// pass status to the chanel to show on final result
 	r.conf.FinalStatus <- status
 }
 
@@ -67,7 +72,7 @@ func (r Worker) Run(url string, method string) (requestDuration time.Duration, r
 	// for calculate the request duration
 	requestDuration = -1
 
-	// caclcute the response size
+	// calculate the response size
 	responseSize = -1
 
 	//start for  calculate the time for each request
