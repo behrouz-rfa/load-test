@@ -1,4 +1,4 @@
-### Golang [Load test]() is a load testing tool written in Go It currently supports GET,
+### Golang [Load-test]() is a load testing tool written in Go It currently supports GET,
 
 #### 👨‍💻 Full list what has been used:
 * [fasthttp](github.com/valyala/fasthttp/) - fasthttp
